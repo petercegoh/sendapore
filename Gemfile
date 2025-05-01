@@ -4,6 +4,7 @@ source "https://rubygems.org"
 gem "rails", "~> 8.0.2"
 # Use sqlite3 as the database for Active Record
 #gem "sqlite3", ">= 2.1"
+gem 'pg', '~> 1.4'
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
@@ -46,7 +47,6 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   gem 'csv'
-  
-  gem 'pg', '~> 1.4'
+
 
 end
