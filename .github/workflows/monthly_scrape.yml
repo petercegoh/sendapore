@@ -1,0 +1,46 @@
+name: Monthly Scraper
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # Runs at midnight on the 1st of every month (UTC)
+  workflow_dispatch:     # Allows you to trigger it manually from GitHub
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2  # Change this to match your Ruby version
+          bundler-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
+      - name: Install Playwright
+        run: |
+          pip install playwright pandas
+          playwright install chromium
+
+      - name: Install dependencies
+        run: |
+          bundle install
+
+      - name: Run DB Setup
+        run: |
+          bin/rails db:setup
+        env:
+          RAILS_ENV: development
+
+      - name: Run Scraper Rake Task
+        run: |
+          bundle exec rake scraper:run
+        env:
+          RAILS_ENV: development
